@@ -1,0 +1,48 @@
+<link rel="import" href="bower_components/polymer/polymer.html">
+
+<dom-module id="input-toggler">
+  <script>
+    Polymer({
+      is: "input-toggler",
+      extends: "input",
+      listeners: {
+        'change': 'handleChange'
+      },
+      handleChange: function(e) {
+        var checked = e.target.checked;
+        this.checkboxes.forEach(function(checkbox) {
+          checkbox.checked = checked;
+        });
+      },
+      ready: function() {
+        document.addEventListener('toggleable-input:ready', this.registerCheckbox.bind(this));
+      },
+      registerCheckbox: function(e){
+        var checkbox = e.detail;
+        if(checkbox.getAttribute("role") == this.getAttribute("role")) {
+          this.checkboxes.push(checkbox);
+        }
+      },
+      properties: {
+        checkboxes: {
+          type: Object,
+          notify: true,
+          value: function() { return [] }
+        }
+      }
+    });
+  </script>
+</dom-module>
+
+<dom module id="toggleable-input">
+  <script>
+    Polymer({
+      is: "toggleable-input",
+      extends: "input",
+      ready: function() {
+        var event = new CustomEvent("toggleable-input:ready", {detail: this});
+        document.dispatchEvent(event);
+      }
+    });
+  </script>
+</dom-module>

@@ -1,0 +1,11 @@
+language: node_js
+node_js:
+- '0.12'
+branches:
+  except:
+  - gh-pages
+before_script:
+  - npm install -g bower
+  - npm install -g web-component-tester
+  - bower install
+script: "xvfb-run wct test/input-toggler-tests.html"

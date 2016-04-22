@@ -1,0 +1,108 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+  <script src="../bower_components/web-component-tester/browser.js"></script>
+  <link rel="import" href="../input-toggler.html">
+</head>
+<body>
+  <test-fixture id="single">
+    <template id="single" is="dom-bind">
+      <div>
+        <h1>Checkboxes #1</h1>
+        <div>
+          <input id="toggler" is="input-toggler" type="checkbox" />
+          <label for="toggler">Check all</label>
+        </div>
+
+        <input id="checkbox1" is="toggleable-input" type="checkbox" />
+        <input id="checkbox2" is="toggleable-input" type="checkbox" />
+      </div>
+    </template>
+  </test-fixture>
+
+  <test-fixture id="multiple">
+    <template id="multiple" is="dom-bind">
+      <div>
+        <h1>Checkboxes #1</h1>
+        <div>
+          <input role="toggle1" id="toggler1" is="input-toggler" type="checkbox" />
+          <label for="toggler1">Check all</label>
+        </div>
+
+        <input role="toggle1" id="checkbox-1-1" is="toggleable-input" type="checkbox" />
+        <input role="toggle1" id="checkbox-1-2" is="toggleable-input" type="checkbox" />
+
+        <h2>Checkboxes #2</h2>
+        <div>
+          <input role="toggle2" id="toggler2" is="input-toggler" type="checkbox" />
+          <label for="toggler2">Check all</label>
+        </div>
+
+        <input role="toggle2" id="checkbox-2-1" is="toggleable-input" type="checkbox" />
+        <input role="toggle2" id="checkbox-2-2" is="toggleable-input" type="checkbox" />
+      </div>
+    </template>
+  </test-fixture>
+  <script>
+    suite('single input toggler', function() {
+      var template;
+      setup(function() {
+        template = fixture("single");
+      });
+      test('checks all checkboxes', function() {
+        var toggler = template.querySelector('#toggler');
+        var checkbox1 = template.querySelector('#checkbox1');
+        var checkbox2 = template.querySelector('#checkbox2');
+
+        assert.isFalse(checkbox1.checked);
+        assert.isFalse(checkbox2.checked);
+
+        toggler.click();
+
+        assert.isTrue(checkbox1.checked);
+        assert.isTrue(checkbox2.checked);
+      });
+
+      test('unchecks all checkboxes', function() {
+        var toggler = template.querySelector('#toggler');
+        var checkbox1 = template.querySelector('#checkbox1');
+        var checkbox2 = template.querySelector('#checkbox2');
+
+        toggler.click();
+        toggler.click();
+
+        assert.isFalse(checkbox1.checked);
+        assert.isFalse(checkbox2.checked);
+      });
+    });
+
+    suite('multiple input togglers', function() {
+      var template;
+      setup(function() {
+        template = fixture("multiple");
+      });
+      test('checks all checkboxes in namespace', function() {
+        var toggler_1 = template.querySelector('#toggler1');
+        var checkbox_1_1 = template.querySelector('#checkbox-1-1');
+        var checkbox_1_2 = template.querySelector('#checkbox-1-2');
+        var checkbox_2_1 = template.querySelector('#checkbox-2-1');
+        var checkbox_2_2 = template.querySelector('#checkbox-2-2');
+
+        assert.isFalse(checkbox_1_1.checked);
+        assert.isFalse(checkbox_1_2.checked);
+        assert.isFalse(checkbox_2_1.checked);
+        assert.isFalse(checkbox_2_2.checked);
+
+        toggler_1.click();
+
+        assert.isTrue(checkbox_1_1.checked);
+        assert.isTrue(checkbox_1_2.checked);
+        assert.isFalse(checkbox_2_1.checked);
+        assert.isFalse(checkbox_2_2.checked);
+      });
+    });
+  </script>
+</body>
+</html>
